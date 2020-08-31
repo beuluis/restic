@@ -1,0 +1,38 @@
+version: "3.7"
+services:
+    restic-backup:
+        container_name: resticBackupDev
+
+        depends_on:
+            - testrest
+
+        environment:
+            BACKUP_CRON: "0 30 3 * * *"
+            RESTIC_REPOSITORY: rest:http://test:test@testrest:8000
+            RESTIC_PASSWORD: test
+
+    restic-prune:
+        container_name: resticPruneDev
+
+        depends_on:
+            - testrest
+
+        environment:
+            PRUNE_CRON: "0 0 4 * * *"
+            RESTIC_REPOSITORY: rest:http://test:test@testrest:8000
+            RESTIC_PASSWORD: test
+
+    testrest:
+        image: restic/rest-server
+
+        container_name: testRestDev
+
+        networks:
+            - default
+
+        ports:
+            - 8000
+
+        volumes:
+            - ./.htpasswd:/data/.htpasswd
+            - ./testData:/data

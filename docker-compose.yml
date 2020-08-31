@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+    restic-backup:
+        image: mazzolino/restic:1.2
+
+        networks:
+            - default
+
+        restart: always
+
+        environment:
+            RESTIC_BACKUP_SOURCES: /mnt/volumes
+            RESTIC_BACKUP_ARGS: >-
+                --tag docker-volumes
+                --verbose
+            RESTIC_FORGET_ARGS: >-
+                --keep-last 10
+                --keep-daily 7
+                --keep-weekly 5
+                --keep-monthly 12
+            TZ: Europe/Berlin
+
+        volumes:
+            - /var/lib/docker/volumes:/mnt/volumes:ro
+
+    restic-prune:
+        image: mazzolino/restic:1.2
+
+        networks:
+            - default
+
+        restart: always
+
+        environment:
+            TZ: Europe/Berlin
