@@ -10,7 +10,7 @@ services:
 
         environment:
             BACKUP_CRON: ${RESTIC_BACKUP_CRON-"0 30 3 * * *"}
-            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_BACKUP-false}
+            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_BACKUP-0}
             RESTIC_BACKUP_SOURCES: /mnt/volumes
             RESTIC_BACKUP_ARGS: >-
                 --tag ${RESTIC_BACKUP_TAG-docker-volumes}
@@ -35,5 +35,5 @@ services:
 
         environment:
             PRUNE_CRON: ${RESTIC_PRUNE_CRON-"0 0 4 * * *"}
-            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_PRUNE-false}
+            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_PRUNE-0}
             TZ: ${RESTIC_TZ-Europe/Berlin}

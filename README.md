@@ -63,8 +63,8 @@ touch .env
 | --- | --- | --- | --- |
 | `RESTIC_BACKUP_CRON` | Crown to run backup | `"0 30 3 * * *"` | false |
 | `RESTIC_PRUNE_CRON` | Cron to run prune | `"0 0 4 * * *"` | false |
-| `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup | `false` | false |
-| `RESTIC_RUN_ON_STARTUP_PRUNE` | Run prune on startup | `false` | false |
+| `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup | `0` | false |
+| `RESTIC_RUN_ON_STARTUP_PRUNE` | Run prune on startup | `0` | false |
 | `RESTIC_BACKUP_TAG` | Tag for backup | `docker-volumes` | false |
 | `RESTIC_KEEP_LAST` | Never delete the `n` last (most recent) snapshots | `10` | false |
 | `RESTIC_KEEP_DAILY` | For the last `n` days which have one or more snapshots, only keep the last one for that day | `7` | false |
@@ -112,8 +112,8 @@ touch .env.prod
 | --- | --- | --- | --- |
 | `RESTIC_BACKUP_CRON` | Crown to run backup | `"0 30 3 * * *"` | false |
 | `RESTIC_PRUNE_CRON` | Cron to run prune | `"0 0 4 * * *"` | false |
-| `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup | `false` | false |
-| `RESTIC_RUN_ON_STARTUP_PRUNE` | Run prune on startup | `false` | false |
+| `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup | `0` | false |
+| `RESTIC_RUN_ON_STARTUP_PRUNE` | Run prune on startup | `0` | false |
 | `RESTIC_BACKUP_TAG` | Tag for backup | `docker-volumes` | false |
 | `RESTIC_KEEP_LAST` | Never delete the `n` last (most recent) snapshots | `10` | false |
 | `RESTIC_KEEP_DAILY` | For the last `n` days which have one or more snapshots, only keep the last one for that day | `7` | false |
