@@ -99,8 +99,6 @@ touch .env.prod
 ```sh
 docker-compose --env-file ./.env.prod -f docker-compose.yml -f docker-compose.production.yml up -d
 ```
-5. Navigate to `https://{your-host}`
-6. Follow setup instructions
 
 ### Customization
 
