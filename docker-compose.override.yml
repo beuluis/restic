@@ -1,8 +1,6 @@
 version: "3.7"
 services:
     restic-backup:
-        image: mazzolino/restic:1.2
-
         container_name: resticBackupDev
 
         depends_on:
@@ -25,8 +23,6 @@ services:
             RESTIC_PASSWORD: ${RESTIC_PASSWORD-test}
 
     testrest:
-        image: restic/rest-server
-
         container_name: testRestDev
 
         networks:
