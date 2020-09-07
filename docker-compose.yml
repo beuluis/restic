@@ -9,16 +9,18 @@ services:
         restart: always
 
         environment:
+            BACKUP_CRON: ${RESTIC_BACKUP_CRON-"0 30 3 * * *"}
+            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP-false}
             RESTIC_BACKUP_SOURCES: /mnt/volumes
             RESTIC_BACKUP_ARGS: >-
-                --tag docker-volumes
+                --tag ${RESTIC_BACKUP_TAG-docker-volumes}
                 --verbose
             RESTIC_FORGET_ARGS: >-
-                --keep-last 10
-                --keep-daily 7
-                --keep-weekly 5
-                --keep-monthly 12
-            TZ: Europe/Berlin
+                --keep-last ${RESTIC_KEEP_LAST-10}
+                --keep-daily ${RESTIC_KEEP_DAILY-7}
+                --keep-weekly ${RESTIC_KEEP_WEEKLY-5}
+                --keep-monthly ${RESTIC_KEEP_MONTHLY-12}
+            TZ: ${RESTIC_TZ-Europe/Berlin}
 
         volumes:
             - /var/lib/docker/volumes:/mnt/volumes:ro
@@ -32,4 +34,5 @@ services:
         restart: always
 
         environment:
-            TZ: Europe/Berlin
+            PRUNE_CRON: ${RESTIC_PRUNE_CRON-"0 0 4 * * *"}
+            TZ: ${RESTIC_TZ-Europe/Berlin}

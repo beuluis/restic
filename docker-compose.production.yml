@@ -5,18 +5,12 @@ services:
         container_name: resticBackupProd
 
         environment:
-            BACKUP_CRON: "0 30 3 * * *"
-            RESTIC_REPOSITORY: rest:<http||https>://<user>:<pass>@<host>:8000 #secure with docker secret
-            RESTIC_PASSWORD_FILE: /run/secrets/resticPassword
+            RESTIC_REPOSITORY: ${RESTIC_REPOSITORY:?Missing environment variable see readme}
+            RESTIC_PASSWORD: ${RESTIC_PASSWORD:?Missing environment variable see readme}
 
     restic-prune:
         container_name: resticPruneProd
 
         environment:
-            PRUNE_CRON: "0 0 4 * * *"
-            RESTIC_REPOSITORY: rest:<http||https>://<user>:<pass>@<host>:8000 #secure with docker secret. Dockerfile set env on startup
-            RESTIC_PASSWORD_FILE: /run/secrets/resticPassword
-
-secrets:
-    resticPassword:
-        external: true
+            RESTIC_REPOSITORY: ${RESTIC_REPOSITORY:?Missing environment variable see readme}
+            RESTIC_PASSWORD: ${RESTIC_PASSWORD:?Missing environment variable see readme}
