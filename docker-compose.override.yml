@@ -7,23 +7,36 @@ services:
             - testrest
 
         environment:
-            RESTIC_REPOSITORY: ${RESTIC_REPOSITORY-rest:http://test:test@testrest:8000}
+            RESTIC_REPOSITORY: ${RESTIC_REPOSITORY-rest:http://test:test@testrest:8000/test}
             RESTIC_PASSWORD: ${RESTIC_PASSWORD-test}
 
     restic-prune:
-        image: mazzolino/restic:1.2
-
         container_name: resticPruneDev
 
         depends_on:
             - testrest
 
         environment:
-            RESTIC_REPOSITORY: ${RESTIC_REPOSITORY-rest:http://test:test@testrest:8000}
+            RESTIC_REPOSITORY: ${RESTIC_REPOSITORY-rest:http://test:test@testrest:8000/test}
+            RESTIC_PASSWORD: ${RESTIC_PASSWORD-test}
+
+    restic-check:
+        container_name: resticCheckDev
+
+        depends_on:
+            - testrest
+
+        environment:
+            RESTIC_REPOSITORY: ${RESTIC_REPOSITORY-rest:http://test:test@testrest:8000/test}
             RESTIC_PASSWORD: ${RESTIC_PASSWORD-test}
 
     testrest:
+        image: restic/rest-server
+
         container_name: testRestDev
+
+        environment:
+            OPTIONS: --private-repos
 
         networks:
             - default
@@ -33,4 +46,4 @@ services:
 
         volumes:
             - ./.htpasswd:/data/.htpasswd
-            - ./testData:/data
+            # - ./testData:/data
