@@ -1,7 +1,7 @@
 version: "3.7"
 services:
     restic-backup:
-        image: mazzolino/restic:1.2
+        image: mazzolino/restic:1.5
 
         networks:
             - default
@@ -26,7 +26,7 @@ services:
             - /var/lib/docker/volumes:/mnt/volumes:ro
 
     restic-prune:
-        image: mazzolino/restic:1.2
+        image: mazzolino/restic:1.5
 
         networks:
             - default
@@ -35,5 +35,20 @@ services:
 
         environment:
             PRUNE_CRON: ${RESTIC_PRUNE_CRON-"0 0 4 * * *"}
-            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_PRUNE-0}
+            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_PRUNE-1}
+            TZ: ${RESTIC_TZ-Europe/Berlin}
+
+    restic-check:
+        image: mazzolino/restic:1.5
+
+        networks:
+            - default
+
+        restart: always
+
+        environment:
+            RESTIC_CHECK_ARGS: >-
+                --read-data-subset=10%
+            CHECK_CRON: ${RESTIC_CHECK_CRON-"0 15 5 * * *"}
+            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_CHECK-0}
             TZ: ${RESTIC_TZ-Europe/Berlin}
