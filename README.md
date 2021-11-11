@@ -28,7 +28,6 @@
 Small docker setup for restic. It will backup all your docker volumes.
 
 The local setup also spins up a [restic-server](https://github.com/restic/rest-server) instance for testing.
-The restic-server data will be mounted under `./testData`.
 
 <!-- GETTING STARTED -->
 
