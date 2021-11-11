@@ -35,9 +35,6 @@ services:
 
         container_name: testRestDev
 
-        environment:
-            OPTIONS: --private-repos
-
         networks:
             - default
 
