@@ -65,11 +65,7 @@ touch .env
 | Variable                       | Description                                                                                     | Default value    | Required |
 | ------------------------------ | ----------------------------------------------------------------------------------------------- | ---------------- | -------- |
 | `RESTIC_BACKUP_CRON`           | GoCron to run backup                                                                            | `0 30 3 * * *`   | false    |
-| `RESTIC_PRUNE_CRON`            | GoCron to run prune                                                                             | `0 0 4 * * *`    | false    |
-| `RESTIC_CHECK_CRON`            | GoCron to run check                                                                             | `0 15 5 * * *`   | false    |
 | `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup                                                                           | `true`          | false    |
-| `RESTIC_RUN_ON_STARTUP_PRUNE`  | Run prune on startup                                                                            | `false`           | false    |
-| `RESTIC_RUN_ON_STARTUP_CHECK`  | Run check on startup                                                                            | `false`          | false    |
 | `RESTIC_BACKUP_TAG`            | Tag for backup                                                                                  | `docker-volumes` | false    |
 | `RESTIC_KEEP_LAST`             | Never delete the `n` last (most recent) snapshots                                               | `10`             | false    |
 | `RESTIC_KEEP_DAILY`            | For the last `n` days which have one or more snapshots, only keep the last one for that day     | `7`              | false    |
@@ -129,11 +125,7 @@ touch .env.prod
 | Variable                       | Description                                                                                     | Default value    | Required |
 | ------------------------------ | ----------------------------------------------------------------------------------------------- | ---------------- | -------- |
 | `RESTIC_BACKUP_CRON`           | GoCron to run backup                                                                            | `0 30 3 * * *`   | false    |
-| `RESTIC_PRUNE_CRON`            | GoCron to run prune                                                                             | `0 0 4 * * *`    | false    |
-| `RESTIC_PRUNE_CHECK`           | GoCron to run check                                                                             | `0 15 5 * * *`   | false    |
 | `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup                                                                           | `true`          | false    |
-| `RESTIC_RUN_ON_STARTUP_PRUNE`  | Run prune on startup                                                                            | `false`           | false    |
-| `RESTIC_RUN_ON_STARTUP_CHECK`  | Run check on startup                                                                            | `false`          | false    |
 | `RESTIC_BACKUP_TAG`            | Tag for backup                                                                                  | `docker-volumes` | false    |
 | `RESTIC_KEEP_LAST`             | Never delete the `n` last (most recent) snapshots                                               | `10`             | false    |
 | `RESTIC_KEEP_DAILY`            | For the last `n` days which have one or more snapshots, only keep the last one for that day     | `7`              | false    |

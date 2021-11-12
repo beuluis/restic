@@ -1,10 +1,26 @@
+
 version: "3.7"
 services:
     restic-backup:
         container_name: resticBackupDev
 
-    restic-prune:
-        container_name: resticPruneDev
+        depends_on:
+            - testrest
 
-    restic-check:
-        container_name: resticCheckDev
+        environment:
+            RESTIC_REPOSITORY: ${RESTIC_REPOSITORY-rest:http://test:test@testrest:8000/test}
+            RESTIC_PASSWORD: ${RESTIC_PASSWORD-test}
+
+    testrest:
+        image: restic/rest-server
+
+        container_name: testRestDev
+
+        networks:
+            - default
+
+        ports:
+            - 8000
+
+        volumes:
+            - ./.htpasswd:/data/.htpasswd
