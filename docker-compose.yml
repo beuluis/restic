@@ -1,7 +1,8 @@
 version: "3.7"
 services:
     restic-backup:
-        image: mazzolino/restic:1.5
+        build:
+            context: .
 
         networks:
             - default
@@ -9,8 +10,8 @@ services:
         restart: always
 
         environment:
-            BACKUP_CRON: ${RESTIC_BACKUP_CRON-"0 30 3 * * *"}
-            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_BACKUP-0}
+            BACKUP_CRON: ${RESTIC_BACKUP_CRON-0 30 3 * * *}
+            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_BACKUP-false}
             RESTIC_BACKUP_SOURCES: /mnt/volumes
             RESTIC_BACKUP_ARGS: >-
                 --tag ${RESTIC_BACKUP_TAG-docker-volumes}
@@ -21,6 +22,31 @@ services:
                 --keep-weekly ${RESTIC_KEEP_WEEKLY-5}
                 --keep-monthly ${RESTIC_KEEP_MONTHLY-12}
             TZ: ${RESTIC_TZ-Europe/Berlin}
+            RESTIC_REPOSITORY: ${RESTIC_REPOSITORY:?Missing environment variable see readme}
+            RESTIC_PASSWORD: ${RESTIC_PASSWORD:?Missing environment variable see readme}
+            POST_COMMANDS_SUCCESS: |-
+                swaks --to ${NOTIFY_TO:?Missing environment variable see readme}
+                --from "${NOTIFY_FROM:?Missing environment variable see readme}"
+                --header "Subject: The backup job was executed successfully"
+                --body "The backup job was executed successfully"
+                --server ${NOTIFY_SERVER:?Missing environment variable see readme}
+                --port ${NOTIFY_PORT-587}
+                --auth LOGIN
+                --auth-user "${NOTIFY_USER:?Missing environment variable see readme}"
+                --auth-password "${NOTIFY_PASSWORD:?Missing environment variable see readme}"
+                -tls
+
+            POST_COMMANDS_FAILURE: |-
+                swaks --to ${NOTIFY_TO:?Missing environment variable see readme}
+                --from "${NOTIFY_FROM:?Missing environment variable see readme}"
+                --header "Subject: The backup job has encountered problems"
+                --body "The backup job has encountered problems"
+                --server ${NOTIFY_SERVER:?Missing environment variable see readme}
+                --port ${NOTIFY_PORT-587}
+                --auth LOGIN
+                --auth-user "${NOTIFY_USER:?Missing environment variable see readme}"
+                --auth-password "${NOTIFY_PASSWORD:?Missing environment variable see readme}"
+                -tls
 
         volumes:
             - /var/lib/docker/volumes:/mnt/volumes:ro
@@ -34,9 +60,11 @@ services:
         restart: always
 
         environment:
-            PRUNE_CRON: ${RESTIC_PRUNE_CRON-"0 0 4 * * *"}
-            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_PRUNE-1}
+            PRUNE_CRON: ${RESTIC_PRUNE_CRON-0 0 4 * * *}
+            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_PRUNE-true}
             TZ: ${RESTIC_TZ-Europe/Berlin}
+            RESTIC_REPOSITORY: ${RESTIC_REPOSITORY:?Missing environment variable see readme}
+            RESTIC_PASSWORD: ${RESTIC_PASSWORD:?Missing environment variable see readme}
 
     restic-check:
         image: mazzolino/restic:1.5
@@ -49,6 +77,8 @@ services:
         environment:
             RESTIC_CHECK_ARGS: >-
                 --read-data-subset=10%
-            CHECK_CRON: ${RESTIC_CHECK_CRON-"0 15 5 * * *"}
-            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_CHECK-0}
+            CHECK_CRON: ${RESTIC_CHECK_CRON-0 15 5 * * *}
+            RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_CHECK-false}
             TZ: ${RESTIC_TZ-Europe/Berlin}
+            RESTIC_REPOSITORY: ${RESTIC_REPOSITORY:?Missing environment variable see readme}
+            RESTIC_PASSWORD: ${RESTIC_PASSWORD:?Missing environment variable see readme}
