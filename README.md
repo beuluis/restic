@@ -27,8 +27,6 @@
 
 Small docker setup for restic. It will backup all your docker volumes.
 
-The local setup also spins up a [restic-server](https://github.com/restic/rest-server) instance for testing.
-
 <!-- GETTING STARTED -->
 
 ## Getting Started Develop
@@ -64,22 +62,28 @@ touch .env
 
 2. Overwrite variables as you like (format: `{variable name}={variable value}`)
 
-| Variable                       | Description                                                                                     | Default value                         | Required |
-| ------------------------------ | ----------------------------------------------------------------------------------------------- | ------------------------------------- | -------- |
-| `RESTIC_BACKUP_CRON`           | Crown to run backup                                                                             | `"0 30 3 * * *"`                      | false    |
-| `RESTIC_PRUNE_CRON`            | Cron to run prune                                                                               | `"0 0 4 * * *"`                       | false    |
-| `RESTIC_CHECK_CRON`            | Cron to run check                                                                               | `"0 15 5 * * *"`                      | false    |
-| `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup                                                                           | `1`                                   | false    |
-| `RESTIC_RUN_ON_STARTUP_PRUNE`  | Run prune on startup                                                                            | `0`                                   | false    |
-| `RESTIC_RUN_ON_STARTUP_CHECK`  | Run check on startup                                                                            | `0`                                   | false    |
-| `RESTIC_BACKUP_TAG`            | Tag for backup                                                                                  | `docker-volumes`                      | false    |
-| `RESTIC_KEEP_LAST`             | Never delete the `n` last (most recent) snapshots                                               | `10`                                  | false    |
-| `RESTIC_KEEP_DAILY`            | For the last `n` days which have one or more snapshots, only keep the last one for that day     | `7`                                   | false    |
-| `RESTIC_KEEP_WEEKLY`           | For the last `n` weeks which have one or more snapshots, only keep the last one for that week   | `5`                                   | false    |
-| `RESTIC_KEEP_MONTHLY`          | For the last `n` months which have one or more snapshots, only keep the last one for that month | `12`                                  | false    |
-| `RESTIC_TZ`                    | Timezone                                                                                        | `Europe/Berlin`                       | false    |
-| `RESTIC_REPOSITORY`            | Repository see [Restic Docs](https://restic.readthedocs.io/)                                    | `rest:http://test:test@testrest:8000` | false    |
-| `RESTIC_PASSWORD`              | Restic password                                                                                 | `test`                                | false    |
+| Variable                       | Description                                                                                     | Default value    | Required |
+| ------------------------------ | ----------------------------------------------------------------------------------------------- | ---------------- | -------- |
+| `RESTIC_BACKUP_CRON`           | GoCron to run backup                                                                            | `0 30 3 * * *`   | false    |
+| `RESTIC_PRUNE_CRON`            | GoCron to run prune                                                                             | `0 0 4 * * *`    | false    |
+| `RESTIC_CHECK_CRON`            | GoCron to run check                                                                             | `0 15 5 * * *`   | false    |
+| `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup                                                                           | `false`          | false    |
+| `RESTIC_RUN_ON_STARTUP_PRUNE`  | Run prune on startup                                                                            | `true`           | false    |
+| `RESTIC_RUN_ON_STARTUP_CHECK`  | Run check on startup                                                                            | `false`          | false    |
+| `RESTIC_BACKUP_TAG`            | Tag for backup                                                                                  | `docker-volumes` | false    |
+| `RESTIC_KEEP_LAST`             | Never delete the `n` last (most recent) snapshots                                               | `10`             | false    |
+| `RESTIC_KEEP_DAILY`            | For the last `n` days which have one or more snapshots, only keep the last one for that day     | `7`              | false    |
+| `RESTIC_KEEP_WEEKLY`           | For the last `n` weeks which have one or more snapshots, only keep the last one for that week   | `5`              | false    |
+| `RESTIC_KEEP_MONTHLY`          | For the last `n` months which have one or more snapshots, only keep the last one for that month | `12`             | false    |
+| `RESTIC_TZ`                    | Timezone                                                                                        | `Europe/Berlin`  | false    |
+| `RESTIC_REPOSITORY`            | Repository see [Restic Docs](https://restic.readthedocs.io/)                                    | none             | true     |
+| `RESTIC_PASSWORD`              | Restic password                                                                                 | none             | true     |
+| `NOTIFY_TO`                    | Email to notify                                                                                 | none             | true     |
+| `NOTIFY_FROM`                  | Sender email                                                                                    | none             | true     |
+| `NOTIFY_SERVER`                | Email server                                                                                    | none             | true     |
+| `NOTIFY_PORT`                  | Server port                                                                                     | `587`            | false    |
+| `NOTIFY_USER`                  | Email user                                                                                      | none             | true     |
+| `NOTIFY_PASSWORD`              | Email password                                                                                  | none             | true     |
 
 ## Getting Started Production
 
@@ -124,12 +128,12 @@ touch .env.prod
 
 | Variable                       | Description                                                                                     | Default value    | Required |
 | ------------------------------ | ----------------------------------------------------------------------------------------------- | ---------------- | -------- |
-| `RESTIC_BACKUP_CRON`           | Crown to run backup                                                                             | `"0 30 3 * * *"` | false    |
-| `RESTIC_PRUNE_CRON`            | Cron to run prune                                                                               | `"0 0 4 * * *"`  | false    |
-| `RESTIC_PRUNE_CHECK`           | Cron to run check                                                                               | `"0 15 5 * * *"` | false    |
-| `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup                                                                           | `0`              | false    |
-| `RESTIC_RUN_ON_STARTUP_PRUNE`  | Run prune on startup                                                                            | `1`              | false    |
-| `RESTIC_RUN_ON_STARTUP_CHECK`  | Run check on startup                                                                            | `0`              | false    |
+| `RESTIC_BACKUP_CRON`           | GoCron to run backup                                                                            | `0 30 3 * * *`   | false    |
+| `RESTIC_PRUNE_CRON`            | GoCron to run prune                                                                             | `0 0 4 * * *`    | false    |
+| `RESTIC_PRUNE_CHECK`           | GoCron to run check                                                                             | `0 15 5 * * *`   | false    |
+| `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup                                                                           | `false`          | false    |
+| `RESTIC_RUN_ON_STARTUP_PRUNE`  | Run prune on startup                                                                            | `true`           | false    |
+| `RESTIC_RUN_ON_STARTUP_CHECK`  | Run check on startup                                                                            | `false`          | false    |
 | `RESTIC_BACKUP_TAG`            | Tag for backup                                                                                  | `docker-volumes` | false    |
 | `RESTIC_KEEP_LAST`             | Never delete the `n` last (most recent) snapshots                                               | `10`             | false    |
 | `RESTIC_KEEP_DAILY`            | For the last `n` days which have one or more snapshots, only keep the last one for that day     | `7`              | false    |
@@ -138,6 +142,12 @@ touch .env.prod
 | `RESTIC_TZ`                    | Timezone                                                                                        | `Europe/Berlin`  | false    |
 | `RESTIC_REPOSITORY`            | Repository see [Restic Docs](https://restic.readthedocs.io/)                                    | none             | true     |
 | `RESTIC_PASSWORD`              | Restic password                                                                                 | none             | true     |
+| `NOTIFY_TO`                    | Email to notify                                                                                 | none             | true     |
+| `NOTIFY_FROM`                  | Sender email                                                                                    | none             | true     |
+| `NOTIFY_SERVER`                | Email server                                                                                    | none             | true     |
+| `NOTIFY_PORT`                  | Server port                                                                                     | `587`            | false    |
+| `NOTIFY_USER`                  | Email user                                                                                      | none             | true     |
+| `NOTIFY_PASSWORD`              | Email password                                                                                  | none             | true     |
 
 <!-- CONTRIBUTING -->
 
