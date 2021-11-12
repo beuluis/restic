@@ -35,6 +35,7 @@ services:
                 --auth-user "${NOTIFY_USER:?Missing environment variable see readme}"
                 --auth-password "${NOTIFY_PASSWORD:?Missing environment variable see readme}"
                 -tls
+                || true
 
             POST_COMMANDS_FAILURE: >-
                 swaks --to ${NOTIFY_TO:?Missing environment variable see readme}
@@ -47,6 +48,7 @@ services:
                 --auth-user "${NOTIFY_USER:?Missing environment variable see readme}"
                 --auth-password "${NOTIFY_PASSWORD:?Missing environment variable see readme}"
                 -tls
+                || true
 
         volumes:
             - /var/lib/docker/volumes:/mnt/volumes:ro
