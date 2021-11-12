@@ -24,7 +24,7 @@ services:
             TZ: ${RESTIC_TZ-Europe/Berlin}
             RESTIC_REPOSITORY: ${RESTIC_REPOSITORY:?Missing environment variable see readme}
             RESTIC_PASSWORD: ${RESTIC_PASSWORD:?Missing environment variable see readme}
-            POST_COMMANDS_SUCCESS: |-
+            POST_COMMANDS_SUCCESS: >-
                 swaks --to ${NOTIFY_TO:?Missing environment variable see readme}
                 --from "${NOTIFY_FROM:?Missing environment variable see readme}"
                 --header "Subject: The backup job was executed successfully"
@@ -36,7 +36,7 @@ services:
                 --auth-password "${NOTIFY_PASSWORD:?Missing environment variable see readme}"
                 -tls
 
-            POST_COMMANDS_FAILURE: |-
+            POST_COMMANDS_FAILURE: >-
                 swaks --to ${NOTIFY_TO:?Missing environment variable see readme}
                 --from "${NOTIFY_FROM:?Missing environment variable see readme}"
                 --header "Subject: The backup job has encountered problems"
