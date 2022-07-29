@@ -65,15 +65,18 @@ touch .env
 | Variable                       | Description                                                                                     | Default value    | Required |
 | ------------------------------ | ----------------------------------------------------------------------------------------------- | ---------------- | -------- |
 | `RESTIC_BACKUP_CRON`           | GoCron to run backup                                                                            | `0 30 3 * * *`   | false    |
-| `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup                                                                           | `true`          | false    |
+| `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup                                                                           | `true`           | false    |
 | `RESTIC_BACKUP_TAG`            | Tag for backup                                                                                  | `docker-volumes` | false    |
-| `RESTIC_KEEP_LAST`             | Never delete the `n` last (most recent) snapshots                                               | `10`             | false    |
+| `RESTIC_BACKUP_HOST`           | Host name for backup                                                                            | `docker`         | false    |
+| `RESTIC_KEEP_LAST`             | Never delete the `n` last (most recent) snapshots                                               | `30`             | false    |
 | `RESTIC_KEEP_DAILY`            | For the last `n` days which have one or more snapshots, only keep the last one for that day     | `7`              | false    |
 | `RESTIC_KEEP_WEEKLY`           | For the last `n` weeks which have one or more snapshots, only keep the last one for that week   | `5`              | false    |
 | `RESTIC_KEEP_MONTHLY`          | For the last `n` months which have one or more snapshots, only keep the last one for that month | `12`             | false    |
 | `RESTIC_TZ`                    | Timezone                                                                                        | `Europe/Berlin`  | false    |
 | `RESTIC_REPOSITORY`            | Repository see [Restic Docs](https://restic.readthedocs.io/)                                    | none             | true     |
 | `RESTIC_PASSWORD`              | Restic password                                                                                 | none             | true     |
+| `AWS_ACCESS_KEY_ID`            | AWS key id                                                                                      | none             | true     |
+| `AWS_SECRET_ACCESS_KEY`        | AWS secret key                                                                                  | none             | true     |
 | `NOTIFY_TO`                    | Email to notify                                                                                 | none             | true     |
 | `NOTIFY_FROM`                  | Sender email                                                                                    | none             | true     |
 | `NOTIFY_SERVER`                | Email server                                                                                    | none             | true     |
@@ -125,7 +128,7 @@ touch .env.prod
 | Variable                       | Description                                                                                     | Default value    | Required |
 | ------------------------------ | ----------------------------------------------------------------------------------------------- | ---------------- | -------- |
 | `RESTIC_BACKUP_CRON`           | GoCron to run backup                                                                            | `0 30 3 * * *`   | false    |
-| `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup                                                                           | `true`          | false    |
+| `RESTIC_RUN_ON_STARTUP_BACKUP` | Run backup on startup                                                                           | `true`           | false    |
 | `RESTIC_BACKUP_TAG`            | Tag for backup                                                                                  | `docker-volumes` | false    |
 | `RESTIC_KEEP_LAST`             | Never delete the `n` last (most recent) snapshots                                               | `10`             | false    |
 | `RESTIC_KEEP_DAILY`            | For the last `n` days which have one or more snapshots, only keep the last one for that day     | `7`              | false    |

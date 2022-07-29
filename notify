@@ -1,0 +1,31 @@
+#!/bin/bash
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -s | --subject)
+        SUBJECT="$2"
+        shift
+        shift
+        ;;
+    -b | --body)
+        BODY="$2"
+        shift
+        shift
+        ;;
+    -* | --*)
+        echo "Unknown option $1"
+        exit 1
+        ;;
+    esac
+done
+
+swaks --to "$NOTIFY_TO" \
+    --from "$NOTIFY_FROM" \
+    --header "Subject: $SUBJECT" \
+    --body "$BODY" \
+    --server "$NOTIFY_SERVER" \
+    --port "$NOTIFY_PORT" \
+    --auth LOGIN \
+    --auth-user "$NOTIFY_USER" \
+    --auth-password "$NOTIFY_PASSWORD" \
+    -tls
