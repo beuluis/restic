@@ -2,7 +2,3 @@ version: "3.7"
 services:
     restic-backup:
         container_name: resticBackupProd
-
-        environment:
-            RESTIC_REPOSITORY: ${RESTIC_REPOSITORY:?Missing environment variable see readme}
-            RESTIC_PASSWORD: ${RESTIC_PASSWORD:?Missing environment variable see readme}

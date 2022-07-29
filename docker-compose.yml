@@ -12,40 +12,41 @@ services:
         environment:
             BACKUP_CRON: ${RESTIC_BACKUP_CRON-0 30 3 * * *}
             RUN_ON_STARTUP: ${RESTIC_RUN_ON_STARTUP_BACKUP-true}
+            RESTIC_REPOSITORY: ${RESTIC_REPOSITORY:?Missing environment variable see readme}
+            RESTIC_PASSWORD: ${RESTIC_PASSWORD:?Missing environment variable see readme}
+            AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:?Missing environment variable see readme}
+            AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:?Missing environment variable see readme}
             RESTIC_BACKUP_SOURCES: /mnt/volumes
             RESTIC_BACKUP_ARGS: >-
                 --tag ${RESTIC_BACKUP_TAG-docker-volumes}
+                --host ${RESTIC_BACKUP_HOST-docker}
                 --verbose
             RESTIC_FORGET_ARGS: >-
-                --keep-last ${RESTIC_KEEP_LAST-10}
+                --keep-last ${RESTIC_KEEP_LAST-30}
                 --keep-daily ${RESTIC_KEEP_DAILY-7}
                 --keep-weekly ${RESTIC_KEEP_WEEKLY-5}
                 --keep-monthly ${RESTIC_KEEP_MONTHLY-12}
             TZ: ${RESTIC_TZ-Europe/Berlin}
+            NOTIFY_TO: ${NOTIFY_TO:?Missing environment variable see readme}
+            NOTIFY_FROM: ${NOTIFY_FROM:?Missing environment variable see readme}
+            NOTIFY_SERVER: ${NOTIFY_SERVER:?Missing environment variable see readme}
+            NOTIFY_PORT: ${NOTIFY_PORT-587}
+            NOTIFY_USER: ${NOTIFY_USER:?Missing environment variable see readme}
+            NOTIFY_PASSWORD: ${NOTIFY_PASSWORD:?Missing environment variable see readme}
             POST_COMMANDS_SUCCESS: >-
-                swaks --to ${NOTIFY_TO:?Missing environment variable see readme}
-                --from "${NOTIFY_FROM:?Missing environment variable see readme}"
-                --header "Subject: The backup job was executed successfully"
-                --body "The backup job was executed successfully"
-                --server ${NOTIFY_SERVER:?Missing environment variable see readme}
-                --port ${NOTIFY_PORT-587}
-                --auth LOGIN
-                --auth-user "${NOTIFY_USER:?Missing environment variable see readme}"
-                --auth-password "${NOTIFY_PASSWORD:?Missing environment variable see readme}"
-                -tls
+                /notify
+                --subject "The s3 backup job was executed successfully"
+                --body "The s3 backup job was executed successfully"
                 || true
-
             POST_COMMANDS_FAILURE: >-
-                swaks --to ${NOTIFY_TO:?Missing environment variable see readme}
-                --from "${NOTIFY_FROM:?Missing environment variable see readme}"
-                --header "Subject: The backup job has encountered problems"
-                --body "The backup job has encountered problems"
-                --server ${NOTIFY_SERVER:?Missing environment variable see readme}
-                --port ${NOTIFY_PORT-587}
-                --auth LOGIN
-                --auth-user "${NOTIFY_USER:?Missing environment variable see readme}"
-                --auth-password "${NOTIFY_PASSWORD:?Missing environment variable see readme}"
-                -tls
+                /notify
+                --subject "The s3 backup job has encountered problems"
+                --body "The s3 backup job has encountered problems"
+                || true
+            POST_COMMANDS_INCOMPLETE: >-
+                /notify
+                --subject "The s3 backup job is incomplete"
+                --body "The s3 backup job is incomplete"
                 || true
 
         volumes:
